@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .task {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px; /* Added margin-bottom for spacing */
+        }
+
+        .completed-task {
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+
+        .task-buttons button {
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>To-Do App</h1>
+        <input type="text" id="taskInput" placeholder="Add new task...">
+        <button onclick="addTask()">Add Task</button>
+
+        <h2>Pending Tasks</h2>
+        <ul id="pendingTasks"></ul>
+
+        <h2>Completed Tasks</h2>
+        <ul id="completedTasks"></ul>
+    </div>
+
+    <script>
+        function addTask() {
+            var taskInput = document.getElementById("taskInput");
+            var taskText = taskInput.value.trim();
+            if (taskText !== "") {
+                var li = document.createElement("li");
+                li.className = "task"; // Added class name for styling
+                li.innerHTML = '<span class="taskText">' + taskText + '</span>' +
+                               '<div class="task-buttons">' +
+                               '<button onclick="completeTask(this)">Complete</button>' +
+                               '<button onclick="editTask(this)">Edit</button>' +
+                               '<button onclick="deleteTask(this)">Delete</button>' +
+                               '</div>';
+                document.getElementById("pendingTasks").appendChild(li);
+                taskInput.value = "";
+            }
+        }
+
+        function completeTask(button) {
+            var taskText = button.parentElement.previousElementSibling.textContent;
+            var li = button.parentElement.parentElement;
+            li.remove();
+            var completedList = document.getElementById("completedTasks");
+            completedList.appendChild(li);
+            li.classList.add("completed-task");
+        }
+
+        function editTask(button) {
+            var taskText = button.parentElement.previousElementSibling.textContent;
+            var newText = prompt("Edit task:", taskText);
+            if (newText !== null && newText.trim() !== "") {
+                button.parentElement.previousElementSibling.textContent = newText;
+            }
+        }
+
+        function deleteTask(button) {
+            var li = button.parentElement.parentElement;
+            li.remove();
+        }
+    </script>
+</body>
+</html>
+
